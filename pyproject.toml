@@ -7,7 +7,6 @@ authors = [
 dependencies = [
     "genanki==0.13.1",
     "edge-tts==6.1.11",
-    "word-gen-card @ file:///${PROJECT_ROOT}/dist/word_gen_card-0.1.dev1%2Bg246c0d9.d20240518-py3-none-any.whl",
     "pre-commit>=3.7.1",
 ]
 requires-python = ">=3.10"
