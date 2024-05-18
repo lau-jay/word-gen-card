@@ -11,7 +11,7 @@ dependencies = [
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
-dynamic = ["version"]
+version = "0.1.0"
 
 [project.scripts]
 card_cli = "src:main"
@@ -23,9 +23,6 @@ plugins = ["pdm-autoexport"]
 includes = ["src.py"]
 locked = true
 
-[tool.pdm.version]
-fallback_version = "0.1.0"
-source = "scm"
 
 [[tool.pdm.autoexport]]
 filename = "requirements.txt"
