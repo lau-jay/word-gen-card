@@ -51,6 +51,9 @@ class GenAnki(abc.ABC):
 
 
 class Eudic(GenAnki):
+    """
+    Eudic dictionary new word to card
+    """
     def process_data(self, path):
         with open(path, 'r') as csvfile:
             datareader = csv.reader(csvfile)
@@ -61,17 +64,17 @@ class Eudic(GenAnki):
                 except ValueError:
                     continue
                 else:
-                    voice = f"/tmp/{row[1]}.mp3"
-                    file_path = Path(voice)
+                    audio_path = f"/tmp/{row[1]}.mp3"
+                    file_path = Path(audio_path)
                     if file_path.exists():
                         print(f"skip {row[0]=}, {row[1]=}")
                     else:
-                        voice = self.make_audio_file(row[1])
+                        audio_path = self.make_audio_file(row[1])
                         sleep(1)
-                    self.package.media_files.append(voice)
-                    print(row[0], voice)
-                    voice = voice.rsplit("/")[-1]
-                    fields = [row[1], row[2], "", f"[sound:{voice}]", row[3]]
+                    self.package.media_files.append(audio_path)
+                    print(row[0], audio_path)
+                    audio_name = audio_path.rsplit("/")[-1]
+                    fields = [row[1], row[2], "", f"[sound:{audio_name}]", row[3]]
                     self.gen_anki(fields=fields)
 
 
@@ -82,6 +85,7 @@ def main():
     parser.add_argument("source", help="dict csv file absoulute path")
     parser.add_argument("to", help="generate anki apkg file save path")
     parser.add_argument("-d", "--deck", type=int,help="random deck id")
+    parser.add_argument("-n", "--name", type=int, help="deck name", default="new_deck")
     args = parser.parse_args()
 
     if args.deck:
@@ -91,31 +95,31 @@ def main():
 
     my_deck = genanki.Deck(
         deck_id,
-    'Eudic新词'
+        args.name,
     )
     my_model = genanki.Model(
         1442716959,
-    'Jay Model',
-    fields=[
-        {'name': '单词'},
-        {'name': '音标'},
-        {'name': '图片'},
-        {'name': '声音'},
-        {'name': '基本释义'},
-    ],
-    templates=[
-        {
-        'name': 'Card 1',
-        'qfmt': """
-        <div style="font-size:50px;font-family:arial black">{{单词}}</div>
-        <div style="font-size:15px; color: blue;">
-            {{音标}}
-        </div>
-        <div class="image">{{图片}}</div>
-        <br> {{声音}}""",
-        'afmt': '{{FrontSide}}<hr id="answer">{{基本释义}}',
-        },
-    ]
+        'Basic Model',
+        fields=[
+            {'name': '单词'},
+            {'name': '音标'},
+            {'name': '图片'},
+            {'name': '声音'},
+            {'name': '基本释义'},
+        ],
+        templates=[
+            {
+                'name': 'Card 1',
+                'qfmt': """
+                <div style="font-size:50px;font-family:arial black">{{单词}}</div>
+                <div style="font-size:15px; color: blue;">
+                    {{音标}}
+                </div>
+                <div class="image">{{图片}}</div>
+                <br> {{声音}}""",
+                'afmt': '{{FrontSide}}<hr id="answer">{{基本释义}}',
+            },
+        ]
     )
 
     eudic = Eudic(deck=my_deck, model=my_model, source_data_path=args.source, to_path=args.to)
