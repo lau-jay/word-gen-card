@@ -1,32 +1,36 @@
-import csv
 import abc
 import argparse
-from time import sleep
+import csv
 from pathlib import Path
-import genanki
-import edge_tts
+from time import sleep
 
+import edge_tts
+import genanki
 
 
 class MyNote(genanki.Note):
-  @property
-  def guid(self):
-    return genanki.guid_for(self.fields[0])
+    @property
+    def guid(self):
+        return genanki.guid_for(self.fields[0])
 
 
 class GenAnki(abc.ABC):
-    """
-    """
+    """ """
 
-    def __init__(self, deck: genanki.Deck, model: genanki.Model, source_data_path: str, to_path: str, 
-                 lang: str ="en-US-JennyNeural") -> None:
+    def __init__(
+        self,
+        deck: genanki.Deck,
+        model: genanki.Model,
+        source_data_path: str,
+        to_path: str,
+        lang: str = "en-US-JennyNeural",
+    ) -> None:
         self.deck = deck
         self.package = genanki.Package(self.deck)
         self.model = model
         self.source_path = source_data_path
         self.to_path = to_path
         self.lang = lang
-
 
     def make_audio_file(self, word):
         communicate = edge_tts.Communicate(word, self.lang)
@@ -36,9 +40,8 @@ class GenAnki(abc.ABC):
                     output_file.write(chunk["data"])
         return output_file.name
 
-
     def gen_anki(self, fields):
-        note =  genanki.Note(model=self.model, fields=fields)
+        note = genanki.Note(model=self.model, fields=fields)
         self.deck.add_note(note)
 
     def packge(self):
@@ -47,17 +50,18 @@ class GenAnki(abc.ABC):
 
     @abc.abstractmethod
     def process_data(self, path):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class Eudic(GenAnki):
     """
     Eudic dictionary new word to card
     """
+
     def process_data(self, path):
-        with open(path, 'r') as csvfile:
+        with open(path, "r") as csvfile:
             datareader = csv.reader(csvfile)
-            next(datareader) # skip head
+            next(datareader)  # skip head
             for row in datareader:
                 try:
                     int(row[0])
@@ -78,20 +82,19 @@ class Eudic(GenAnki):
                     self.gen_anki(fields=fields)
 
 
-
 def main():
     parser = argparse.ArgumentParser(description="generate anki card from dict csv file")
 
     parser.add_argument("source", help="dict csv file absoulute path")
     parser.add_argument("to", help="generate anki apkg file save path")
-    parser.add_argument("-d", "--deck", type=int,help="random deck id")
+    parser.add_argument("-d", "--deck", type=int, help="random deck id")
     parser.add_argument("-n", "--name", type=int, help="deck name", default="new_deck")
     args = parser.parse_args()
 
     if args.deck:
         deck_id = args.deck
     else:
-        deck_id = 20240516,
+        deck_id = 20240516
 
     my_deck = genanki.Deck(
         deck_id,
@@ -99,27 +102,27 @@ def main():
     )
     my_model = genanki.Model(
         1442716959,
-        'Basic Model',
+        "Basic Model",
         fields=[
-            {'name': '单词'},
-            {'name': '音标'},
-            {'name': '图片'},
-            {'name': '声音'},
-            {'name': '基本释义'},
+            {"name": "单词"},
+            {"name": "音标"},
+            {"name": "图片"},
+            {"name": "声音"},
+            {"name": "基本释义"},
         ],
         templates=[
             {
-                'name': 'Card 1',
-                'qfmt': """
+                "name": "Card 1",
+                "qfmt": """
                 <div style="font-size:50px;font-family:arial black">{{单词}}</div>
                 <div style="font-size:15px; color: blue;">
                     {{音标}}
                 </div>
                 <div class="image">{{图片}}</div>
                 <br> {{声音}}""",
-                'afmt': '{{FrontSide}}<hr id="answer">{{基本释义}}',
+                "afmt": '{{FrontSide}}<hr id="answer">{{基本释义}}',
             },
-        ]
+        ],
     )
 
     eudic = Eudic(deck=my_deck, model=my_model, source_data_path=args.source, to_path=args.to)
