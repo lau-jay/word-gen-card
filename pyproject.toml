@@ -1,0 +1,38 @@
+[project]
+name = "word-gen-card"
+description = "a dict export word list generate anki card tool"
+authors = [
+    {name = "jay lau", email = "cappyclear@gmail.com"},
+]
+dependencies = [
+    "genanki==0.13.1",
+    "edge-tts==6.1.11",
+    "word-gen-card @ file:///${PROJECT_ROOT}/dist/word_gen_card-0.1.dev1%2Bg246c0d9.d20240518-py3-none-any.whl",
+    "pre-commit>=3.7.1",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+[project.scripts]
+card_cli = "src:main"
+
+[tool.pdm]
+plugins = ["pdm-autoexport"]
+
+[tool.pdm.build]
+includes = ["src.py"]
+locked = true
+
+[tool.pdm.version]
+fallback_version = "0.1.0"
+source = "scm"
+
+[[tool.pdm.autoexport]]
+filename = "requirements.txt"
+without-hashes = true
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"

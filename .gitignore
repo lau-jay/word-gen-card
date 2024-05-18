@@ -156,7 +156,6 @@ pyrightconfig.json
 node_modules
 notebook
 *.dist.*
-pyproject.toml
 
 sql/*.sql
 .pdm-python
