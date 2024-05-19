@@ -38,7 +38,7 @@ fields=[
         ],
 ```
 
-your process_data method logic only put this struct data to `self.gen_anki` if  useing default model, like below:
+your process_data method logic only put this struct data to `self.gen_anki` if  using default model, like below:
 
 
 ```python
