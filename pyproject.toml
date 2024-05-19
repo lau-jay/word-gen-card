@@ -1,6 +1,6 @@
 [project]
 name = "word-gen-card"
-description = "a dict export word list generate anki card tool"
+description = "a generate anki card  tool from dictionary export csv file"
 authors = [
     {name = "jay lau", email = "cappyclear@gmail.com"},
 ]
@@ -11,10 +11,13 @@ dependencies = [
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
-version = "0.1.0"
+version = "0.1.1"
 
 [project.scripts]
 card_cli = "src:main"
+
+[project.urls]
+Repository = "https://github.com/lau-jay/word-gen-card"
 
 [tool.pdm]
 plugins = ["pdm-autoexport"]

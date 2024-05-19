@@ -83,11 +83,11 @@ class Eudic(GenAnki):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="generate anki card from dict csv file")
+    parser = argparse.ArgumentParser(description="a generate anki card  tool from dictionary export csv file")
 
-    parser.add_argument("source", help="dict csv file absoulute path")
+    parser.add_argument("source", help="dictionary export csv file absoulute path")
     parser.add_argument("to", help="generate anki apkg file save path")
-    parser.add_argument("-d", "--deck", type=int, help="random deck id")
+    parser.add_argument("-d", "--deck", type=int, help="deck id")
     parser.add_argument("-n", "--name", type=int, help="deck name", default="new_deck")
     args = parser.parse_args()
 
