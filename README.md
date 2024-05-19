@@ -11,7 +11,7 @@ pip install word-gen-card
 
 
 ## Quickstart
-**Now Support Eudic export csv json""
+**Now Support Eudic export csv file**
 
 ```bash
 card_cli source_file_path to_save_path -n dect_name -d deck_id
