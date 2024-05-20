@@ -6,19 +6,13 @@ a generate anki card  tool from dictionary export csv file
 word-gen-card requires python version 3.10 or higher
 
 ```bash
-pip install word-gen-card
+pip install word_gen_card
 ```
-
 
 ## Quickstart
 **Now Support Eudic export csv file**
 
-```bash
-card_cli source_file_path to_save_path -n dect_name -d deck_id
-
-```
-
-see more details
+see usage details
 
 ```bash
 card_cli --help
@@ -38,11 +32,11 @@ fields=[
         ],
 ```
 
-your process_data method logic only put this struct data to `self.gen_anki` if  using default model, like below:
+your process_data method logic only put this fields list to `self.gen_anki` if  using default model, like below:
 
 
 ```python
-from word-gen-card.src import GenAnki
+from word_gen_card import GenAnki
 
 class OtherDict(GenAnki):
     def process_data(self, path):
@@ -81,5 +75,3 @@ for more model detail see [genanki](https://github.com/kerrickstaley/genanki) re
 ## License
 
 This project is open sourced under MIT license, see the [LICENSE](LICENSE) file for more details.
-
-

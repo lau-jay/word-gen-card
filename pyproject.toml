@@ -1,8 +1,8 @@
 [project]
-name = "word-gen-card"
+name = "word_gen_card"
 description = "a generate anki card  tool from dictionary export csv file"
 authors = [
-    {name = "jay lau", email = "cappyclear@gmail.com"},
+    {name = "Jay Lau", email = "cappyclear@gmail.com"},
 ]
 dependencies = [
     "genanki==0.13.1",
@@ -11,10 +11,10 @@ dependencies = [
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
-version = "0.1.1"
+version = "0.1.3"
 
 [project.scripts]
-card_cli = "src:main"
+card_cli = "word_gen_card.cli:main"
 
 [project.urls]
 Repository = "https://github.com/lau-jay/word-gen-card"
@@ -23,7 +23,7 @@ Repository = "https://github.com/lau-jay/word-gen-card"
 plugins = ["pdm-autoexport"]
 
 [tool.pdm.build]
-includes = ["src.py"]
+includes = ["word_gen_card"]
 locked = true
 
 
