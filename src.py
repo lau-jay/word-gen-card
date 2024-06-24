@@ -1,5 +1,6 @@
 import csv
 import abc
+import argparse
 from time import sleep
 from pathlib import Path
 import genanki
@@ -74,9 +75,22 @@ class Eudic(GenAnki):
                     self.gen_anki(fields=fields)
 
 
-if __name__ == "__main__":
+
+def main():
+    parser = argparse.ArgumentParser(description="generate anki card from dict csv file")
+
+    parser.add_argument("source", help="dict csv file absoulute path")
+    parser.add_argument("to", help="generate anki apkg file save path")
+    parser.add_argument("-d", "--deck", type=int,help="random deck id")
+    args = parser.parse_args()
+
+    if args.deck:
+        deck_id = args.deck
+    else:
+        deck_id = 20240516,
+
     my_deck = genanki.Deck(
-        20240516,
+        deck_id,
     'Eudic新词'
     )
     my_model = genanki.Model(
@@ -104,5 +118,9 @@ if __name__ == "__main__":
     ]
     )
 
-    eudic = Eudic(deck=my_deck, model=my_model, source_data_path="/Users/jay/Documents/我的学习记录_May 16, 2024.csv", to_path="/Users/jay/Downloads/output.apkg")
+    eudic = Eudic(deck=my_deck, model=my_model, source_data_path=args.source, to_path=args.to)
     eudic.packge()
+
+
+if __name__ == "__main__":
+    main()
